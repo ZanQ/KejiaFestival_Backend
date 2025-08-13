@@ -1,0 +1,11 @@
+module.exports.Token = require('./token.model');
+module.exports.User = require('./user.model');
+module.exports.Order = require('./order.model');
+module.exports.Notification = require('./notification.model');
+module.exports.FundTransaction = require('./fundTransaction.model');
+module.exports.Scan = require('./scan.model');
+module.exports.MenuItem = require('./menu.model');
+module.exports.VendorCode = require('./vendorCode.model');
+module.exports.Settings = require('./settings.model');
+module.exports.Workshop = require('./workshop.model').Workshop;
+module.exports.Session = require('./workshop.model').Session;
