@@ -27,6 +27,12 @@ const envVarsSchema = Joi.object()
     GOOGLE_CLOUD_PROJECT_ID: Joi.string().description('Google Cloud Project ID'),
     GOOGLE_CLOUD_KEY_FILE: Joi.string().description('Path to Google Cloud service account key file'),
     GOOGLE_CLOUD_BUCKET_NAME: Joi.string().description('Google Cloud Storage bucket name'),
+    // SSL/HTTPS configuration
+    SSL_ENABLED: Joi.boolean().default(false).description('Enable HTTPS server'),
+    SSL_KEY_PATH: Joi.string().description('Path to SSL private key file'),
+    SSL_CERT_PATH: Joi.string().description('Path to SSL certificate file'),
+    SSL_CA_PATH: Joi.string().description('Path to SSL certificate authority file (optional)'),
+    FRONTEND_URL: Joi.string().description('Frontend URL for CORS'),
   })
   .unknown();
 
@@ -71,5 +77,11 @@ module.exports = {
     projectId: envVars.GOOGLE_CLOUD_PROJECT_ID,
     keyFile: envVars.GOOGLE_CLOUD_KEY_FILE,
     bucketName: envVars.GOOGLE_CLOUD_BUCKET_NAME,
+  },
+  ssl: {
+    enabled: envVars.SSL_ENABLED,
+    keyPath: envVars.SSL_KEY_PATH,
+    certPath: envVars.SSL_CERT_PATH,
+    caPath: envVars.SSL_CA_PATH,
   },
 };
