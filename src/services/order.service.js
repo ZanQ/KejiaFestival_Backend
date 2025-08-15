@@ -3,9 +3,13 @@ const { Order, MenuItem } = require('../models');
 const ApiError = require('../utils/ApiError');
 const userService = require('./user.service');
 const menuItemService = require('./menuItem.service');
+const { sendIncomingOrderEmail, sendOrderReadyEmail } = require('./email.service');
 const { create } = require('handlebars');
 
 const { User } = require('../models');
+
+const config = require('../config/config');
+
 
 /**
  * Create an order
@@ -71,6 +75,21 @@ const createOrder = async (orderBody) => {
     status: 'preparing',
     paymentStatus: 'paid',
   });
+
+  //Send the Email to the Vendor
+  await sendIncomingOrderEmail(
+    vendor.email,           // to
+    vendor.name,            // vendorName
+    customer.name,          // customerName
+    order.items[0].name,    // orderName
+    order.totalAmount,      // orderAmount
+    order.createdAt,        // orderDate
+    config.frontend.url      // orderUrl
+  );
+
+  // Send the Email Debug
+  console.log('Sending incoming order email...');
+  console.log(`To: ${vendor.email}, Vendor Name: ${vendor.name}, Customer Name: ${customer.name}, Order Name: ${order.items[0].name}, Order Amount: ${order.totalAmount}, Order Date: ${order.createdAt}, Order URL: ${config.frontend.url}`);
 
   // Populate customer and vendor details
   await order.populate([
@@ -197,7 +216,25 @@ const updateOrderById = async (orderId, updateBody) => {
   if (!order) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Order not found');
   }
+
+  console.log("Order: ", order);
+
+  //Check to see if order is ready
+  if (order.status === 'ready') {
+
+    // Send "Order is Ready" email to the customer
+    await sendOrderReadyEmail(
+      order.customer.email,           // to
+      order.customer.name,            // customerName
+      order.items[0].name,                // orderName
+      order.totalAmount,        // orderAmount
+      order.updatedAt,            // readyDate (or use new Date() if not available)
+      config.frontend.url        // orderUrl
+    );
   
+    console.log("Sent Order Ready Email to Customer");
+  }
+
   Object.assign(order, updateBody);
   await order.save();
   return order;

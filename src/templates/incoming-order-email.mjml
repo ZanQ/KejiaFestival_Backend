@@ -1,17 +1,17 @@
 <mjml>
   <mj-head>
-    <mj-title>Verify your email to complete registration</mj-title>
-    <mj-preview>Complete your registration by verifying your email address</mj-preview>
+    <mj-title>New Incoming Order</mj-title>
+    <mj-preview>You have a new order to prepare!</mj-preview>
     <mj-attributes>
       <mj-all font-family="'Helvetica Neue', Helvetica, Arial, sans-serif"></mj-all>
     </mj-attributes>
     <mj-style inline="inline">
-      .verification-btn {
+      .action-btn {
         background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
         border-radius: 6px !important;
         transition: all 0.3s ease;
       }
-      .verification-btn:hover {
+      .action-btn:hover {
         transform: translateY(-2px);
         box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
       }
@@ -20,26 +20,22 @@
   <mj-body background-color="#f4f4f4">
     <mj-section background-color="#ffffff" padding-bottom="0px">
       <mj-column>
-        <mj-image width="200px" src="https://kejia.co-owners.ca/logo.png" alt="Keija Festival Logo"></mj-image>
+        <mj-image width="200px" src="https://kejia.co-owners.ca/logo.png" alt="Kejia Festival Logo"></mj-image>
       </mj-column>
     </mj-section>
-    
     <mj-section background-color="#ffffff" padding-top="20px">
       <mj-column>
         <mj-text font-size="28px" color="#333333" font-weight="600" align="center" line-height="36px">
-          Welcome! Please verify your email
+          Incoming Order Notification
         </mj-text>
-        
         <mj-text font-size="16px" color="#666666" line-height="26px" padding-top="20px">
-          Hello {{name}}! 👋
+          Hello {{vendorName}},
         </mj-text>
-        
         <mj-text font-size="16px" color="#666666" line-height="26px">
-          Thank you for signing up! To complete your registration and secure your account, please verify your email address by clicking the button below.
+          You have received a new order from {{customerName}}. Please review the order details and start preparing.
         </mj-text>
       </mj-column>
     </mj-section>
-    
     <mj-section background-color="#ffffff" padding-top="10px" padding-bottom="10px" padding-left="40px" padding-right="40px">
       <mj-column>
         <mj-button 
@@ -49,48 +45,33 @@
           font-weight="600"
           border-radius="6px"
           padding="15px 30px"
-          href="{{verificationUrl}}"
+          href="{{orderUrl}}"
           align="center"
-          css-class="verification-btn">
-          Verify Email Address
+          css-class="action-btn">
+          View Order Details
         </mj-button>
       </mj-column>
     </mj-section>
-    
     <mj-section background-color="#ffffff" padding-top="0px">
       <mj-column>
-        
         <mj-text font-size="14px" color="#888888" line-height="21px" padding-top="30px">
-          If the button doesn't work, you can also copy and paste this link into your browser:
+          Order Items: <strong>{{orderName}}</strong><br/>
+          Total Amount: <strong>{{orderAmount}}</strong><br/>
+          Placed At: <strong>{{orderDate}}</strong>
         </mj-text>
-        
-        <mj-text font-size="14px" color="#667eea" line-height="21px" padding-top="10px">
-          {{verificationUrl}}
-        </mj-text>
-        
         <mj-divider border-color="#e0e0e0" border-width="1px" padding-top="30px" padding-bottom="20px"></mj-divider>
-        
         <mj-text font-size="14px" color="#888888" line-height="21px">
-          <strong>Important notes:</strong>
+          Please ensure the order is prepared on time. For any issues, contact support.
         </mj-text>
-        
-        <mj-text font-size="14px" color="#888888" line-height="21px">
-          • This verification link will expire in 24 hours<br/>
-          • If you didn't create an account with us, you can safely ignore this email<br/>
-          • For security reasons, please don't share this link with anyone
-        </mj-text>
-        
         <mj-text font-size="14px" color="#888888" line-height="21px" padding-top="20px">
           Need help? Contact our support team at support@yourcompany.com
         </mj-text>
       </mj-column>
     </mj-section>
-    
     <mj-section background-color="#f8f9fa" padding="30px 20px">
       <mj-column>
-        
         <mj-text font-size="12px" color="#888888" align="center" line-height="18px" padding-top="15px">
-          This email was sent to {{email}} because you signed up for an account.
+          This email was sent to {{vendorEmail}} because you are a registered vendor.
         </mj-text>
       </mj-column>
     </mj-section>

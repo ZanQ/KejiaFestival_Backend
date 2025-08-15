@@ -100,10 +100,71 @@ If you did not request this registration, please ignore this email.`;
   }
 };
 
+const sendIncomingOrderEmail = async (to, vendorName, customerName, orderName, orderAmount, orderDate, orderUrl) => {
+  const subject = 'New Incoming Order';
+
+  const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'CAD' }).format(orderAmount);
+
+  const htmlContent = await emailTemplateService.compileEmailTemplate('incoming-order-email', {
+    vendorName,
+    customerName,
+    orderName,
+    orderAmount: formattedAmount,
+    orderDate,
+    orderUrl,
+    vendorEmail: to
+  });
+
+  //Sending Email to Vendor
+  console.log('Sending order email...');
+  console.log(`To: ${to}, Vendor Name: ${vendorName}, Customer Name: ${customerName}, Order Name: ${orderName}, Order Amount: ${formattedAmount}, Order Date: ${orderDate}, Order URL: ${orderUrl}`); 
+
+  const textContent = `Hello ${vendorName},\nYou have received a new order from ${customerName}.\nOrder Name: ${orderName}\nAmount: ${formattedAmount}\nDate: ${orderDate}\nView: ${orderUrl}`;
+  await sendEmail(to, subject, textContent, htmlContent);
+
+};
+
+const sendOrderReadyEmail = async (to, customerName, orderName, orderAmount, readyDate, orderUrl) => {
+  const subject = 'Your Order is Ready!';
+
+  const formattedAmount = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'CAD' }).format(orderAmount);
+
+  console.log('Sending order ready email...');
+  console.log(`To: ${to}, Customer Name: ${customerName}, Order Name: ${orderName}, Amount: ${orderAmount}, Ready Date: ${readyDate}, Order URL: ${orderUrl}`);
+
+  const htmlContent = await emailTemplateService.compileEmailTemplate('order-ready-email', {
+    customerName,
+    orderName,
+    orderAmount: formattedAmount,
+    readyDate,
+    orderUrl,
+    customerEmail: to
+  });
+  const textContent = `Hello ${customerName},\nYour order ${orderName} is ready!\nAmount: ${orderAmount}\nReady at: ${readyDate}\nView: ${orderUrl}`;
+  await sendEmail(to, subject, textContent, htmlContent);
+};
+
+const sendDepositConfirmedEmail = async (to, customerName, depositAmount, transactionId, depositDate, accountUrl) => {
+  const subject = 'Deposit Confirmed';
+  const htmlContent = await emailTemplateService.compileEmailTemplate('deposit-confirmed-email', {
+    customerName,
+    depositAmount,
+    transactionId,
+    depositDate,
+    accountUrl,
+    customerEmail: to
+  });
+  const textContent = `Hello ${customerName},\nYour deposit of ${depositAmount} has been confirmed.\nTransaction ID: ${transactionId}\nDate: ${depositDate}\nView account: ${accountUrl}`;
+  await sendEmail(to, subject, textContent, htmlContent);
+};
+
 module.exports = {
   transport,
   sendEmail,
   sendResetPasswordEmail,
   sendVerificationEmail,
   sendPreRegistrationEmail,
+  sendIncomingOrderEmail,
+  sendOrderReadyEmail,
+  sendDepositConfirmedEmail
 };
