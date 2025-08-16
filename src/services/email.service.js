@@ -74,7 +74,7 @@ const sendPreRegistrationEmail = async (to, token, name,coOwnersFlag) => {
   const subject = 'Verify your email to complete registration';
   
   // Build verification URL with parameters
-  const verificationUrl = `http://localhost:3000/complete-registration?token=${token}&coOwnersFlag=${coOwnersFlag}`;
+  const verificationUrl = config.frontend.url + `/complete-registration?token=${token}&coOwnersFlag=${coOwnersFlag}`;
   
   try {
     // Generate HTML email using MJML template
