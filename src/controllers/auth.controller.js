@@ -2,7 +2,7 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
-const CoOwnersAPI = 'http://prod.co-owners.ca:8000/v1'
+const CoOwnersAPI = 'https://prod.co-owners.ca:8000/v1'
 
 const register = catchAsync(async (req, res) => {  
   // Send verification email first
