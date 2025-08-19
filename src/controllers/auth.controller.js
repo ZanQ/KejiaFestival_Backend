@@ -2,6 +2,8 @@ const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
 
+const CoOwnersAPI = 'http://prod.co-owners.ca:8000/v1'
+
 const register = catchAsync(async (req, res) => {  
   // Send verification email first
   const verificationToken = await authService.sendPreRegistrationEmail(req.body);
@@ -21,6 +23,21 @@ const completeRegistration = catchAsync(async (req, res) => {
   const tokens = await tokenService.generateAuthTokens(user);
 
   console.log('Registration completed for user:', user.email, 'type:', user.type);
+
+  //Signup User on Co-Owners
+  await fetch(`${CoOwnersAPI}/auth/register`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      email: user.email,
+      name: user.name,
+      username: user.username,
+      password: user.password,
+      isEmailVerified: true,
+    })
+  });
 
   // When sending the user data back, ensure sensitive information is not included
   user.password = undefined; // Remove password from response
