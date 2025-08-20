@@ -26,20 +26,12 @@ const completeRegistration = catchAsync(async (req, res) => {
   console.log('Registration completed for user:', user.email, 'type:', user.type);
 
   //Signup User on Co-Owners
-  await fetch(`${CoOwnersAPI}/auth/register`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
     await axios.post(`${CoOwnersAPI}/auth/register`, {
       email: user.email,
       name: user.name,
       username: user.username,
       password: user.password,
       isEmailVerified: true,
-    })
-  });
     });
 
   // When sending the user data back, ensure sensitive information is not included
@@ -97,6 +89,13 @@ const registerDirect = catchAsync(async (req, res) => {
 
   //Register on Co-Owners
   await axios.post(`${CoOwnersAPI}/auth/signUpWithGoogle`, {
+    email: user.email,
+    name: user.name,
+    username: user.username,
+    isEmailVerified: true
+  });
+
+
   // Clean up user data for response - create a clean copy to avoid mutating the original
   const cleanUser = {
     ...user.toObject ? user.toObject() : user,
