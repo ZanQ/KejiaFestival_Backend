@@ -1,6 +1,7 @@
 const httpStatus = require('http-status');
 const catchAsync = require('../utils/catchAsync');
 const { authService, userService, tokenService, emailService } = require('../services');
+const axios = require('axios'); 
 
 const CoOwnersAPI = 'https://prod.co-owners.ca:8000/v1'
 
@@ -31,7 +32,6 @@ const completeRegistration = catchAsync(async (req, res) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-  const axios = require('axios');
     await axios.post(`${CoOwnersAPI}/auth/register`, {
       email: user.email,
       name: user.name,
@@ -87,6 +87,7 @@ const registerDirect = catchAsync(async (req, res) => {
   const tokens = await tokenService.generateAuthTokens(user);
 
   const registrationType = googleId ? 'Google authentication' : 'Direct registration';
+
   console.log(`${registrationType} completed for user:`, {
     email: user.email, 
     type: user.type, 
@@ -95,6 +96,7 @@ const registerDirect = catchAsync(async (req, res) => {
   });
 
   //Register on Co-Owners
+  await axios.post(`${CoOwnersAPI}/auth/signUpWithGoogle`, {
   // Clean up user data for response - create a clean copy to avoid mutating the original
   const cleanUser = {
     ...user.toObject ? user.toObject() : user,
