@@ -31,6 +31,8 @@ const completeRegistration = catchAsync(async (req, res) => {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
+  const axios = require('axios');
+    await axios.post(`${CoOwnersAPI}/auth/register`, {
       email: user.email,
       name: user.name,
       username: user.username,
@@ -38,6 +40,7 @@ const completeRegistration = catchAsync(async (req, res) => {
       isEmailVerified: true,
     })
   });
+    });
 
   // When sending the user data back, ensure sensitive information is not included
   user.password = undefined; // Remove password from response
@@ -91,6 +94,7 @@ const registerDirect = catchAsync(async (req, res) => {
     ...(user.googleId && { hasGoogleId: true })
   });
 
+  //Register on Co-Owners
   // Clean up user data for response - create a clean copy to avoid mutating the original
   const cleanUser = {
     ...user.toObject ? user.toObject() : user,
